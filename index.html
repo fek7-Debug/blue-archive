@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>BlueVault</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #eaf6ff;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(0, 140, 255, 0.18), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(0, 90, 255, 0.14), transparent 35%),
+        #050a12;
+      overflow-x: hidden;
+    }
+
+    /* ---------- BACKGROUND ---------- */
+
+    .background-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(0, 119, 255, 0.12);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .glow-one {
+      top: -100px;
+      left: -100px;
+    }
+
+    .glow-two {
+      bottom: -120px;
+      right: -100px;
+    }
+
+    /* ---------- HEADER ---------- */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      width: 100%;
+      padding: 15px 18px;
+
+      background: rgba(5, 12, 22, 0.72);
+      border-bottom: 1px solid rgba(0, 153, 255, 0.28);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .header-content {
+      max-width: 1100px;
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 10px;
+
+      background: rgba(0, 119, 255, 0.15);
+      border: 1px solid rgba(0, 153, 255, 0.55);
+
+      box-shadow:
+        0 0 20px rgba(0, 119, 255, 0.18),
+        inset 0 0 15px rgba(0, 119, 255, 0.08);
+    }
+
+    .logo span {
+      color: #39a9ff;
+    }
+
+    .admin-button {
+      padding: 9px 14px;
+
+      color: #dff3ff;
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: 600;
+
+      background: rgba(0, 119, 255, 0.10);
+      border: 1px solid rgba(0, 153, 255, 0.35);
+      border-radius: 9px;
+
+      transition: 0.2s;
+    }
+
+    .admin-button:hover {
+      background: rgba(0, 119, 255, 0.20);
+      border-color: rgba(0, 174, 255, 0.7);
+    }
+
+    /* ---------- MAIN ---------- */
+
+    main {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 55px 18px 80px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 7px 12px;
+      margin-bottom: 17px;
+
+      font-size: 12px;
+      color: #9fdcff;
+
+      background: rgba(0, 119, 255, 0.08);
+      border: 1px solid rgba(0, 153, 255, 0.28);
+      border-radius: 999px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #20a7ff;
+      box-shadow: 0 0 10px #20a7ff;
+    }
+
+    h1 {
+      font-size: clamp(36px, 8vw, 65px);
+      line-height: 1;
+      margin-bottom: 17px;
+
+      background: linear-gradient(
+        90deg,
+        #ffffff,
+        #65c4ff,
+        #188cff
+      );
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      max-width: 600px;
+      margin: auto;
+
+      color: #91a9bd;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ---------- SEARCH ---------- */
+
+    .search-box {
+      max-width: 650px;
+      margin: 0 auto 35px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 15px 18px 15px 45px;
+
+      color: white;
+      font-size: 14px;
+
+      outline: none;
+
+      background: rgba(9, 25, 42, 0.58);
+      border: 1px solid rgba(0, 153, 255, 0.30);
+      border-radius: 13px;
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      transition: 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: rgba(0, 174, 255, 0.75);
+      box-shadow: 0 0 25px rgba(0, 119, 255, 0.10);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 17px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      color: #54baff;
+      font-size: 17px;
+    }
+
+    /* ---------- SECTION ---------- */
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 15px;
+    }
+
+    .section-title h2 {
+      font-size: 18px;
+    }
+
+    .section-title span {
+      color: #66849c;
+      font-size: 12px;
+    }
+
+    /* ---------- CARDS ---------- */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .card {
+      position: relative;
+
+      padding: 19px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(11, 34, 55, 0.72),
+          rgba(5, 16, 28, 0.58)
+        );
+
+      border: 1px solid rgba(0, 153, 255, 0.25);
+      border-radius: 15px;
+
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+
+      box-shadow:
+        inset 0 1px rgba(255,255,255,0.03),
+        0 10px 35px rgba(0,0,0,0.18);
+
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0, 174, 255, 0.60);
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-bottom: 14px;
+
+      border-radius: 11px;
+
+      color: #4db8ff;
+      font-size: 20px;
+
+      background: rgba(0, 119, 255, 0.10);
+      border: 1px solid rgba(0, 153, 255, 0.25);
+    }
+
+    .card h3 {
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .card p {
+      min-height: 42px;
+
+      color: #7993a8;
+      font-size: 12px;
+      line-height: 1.5;
+
+      margin-bottom: 17px;
+    }
+
+    .card-button {
+      display: block;
+      width: 100%;
+
+      padding: 10px;
+
+      text-align: center;
+      text-decoration: none;
+
+      color: #e9f7ff;
+      font-size: 12px;
+      font-weight: 700;
+
+      background: rgba(0, 119, 255, 0.12);
+      border: 1px solid rgba(0, 153, 255, 0.30);
+      border-radius: 9px;
+
+      transition: 0.2s;
+    }
+
+    .card-button:hover {
+      background: rgba(0, 119, 255, 0.23);
+      border-color: rgba(0, 174, 255, 0.65);
+    }
+
+    /* ---------- FOOTER ---------- */
+
+    footer {
+      padding: 25px 18px;
+
+      text-align: center;
+
+      color: #536b7e;
+      font-size: 11px;
+
+      border-top: 1px solid rgba(0, 153, 255, 0.14);
+    }
+
+    /* ---------- MOBILE ---------- */
+
+    @media (max-width: 750px) {
+
+      main {
+        padding-top: 40px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .card {
+        padding: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      .header-content {
+        gap: 8px;
+      }
+
+      .logo {
+        font-size: 17px;
+      }
+
+      .logo-icon {
+        width: 33px;
+        height: 33px;
+      }
+
+      .admin-button {
+        padding: 8px 11px;
+        font-size: 11px;
+      }
+
+      main {
+        padding-left: 13px;
+        padding-right: 13px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 43px;
+      }
+
+      .hero p {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="background-glow glow-one"></div>
+  <div class="background-glow glow-two"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-content">
+
+      <div class="logo">
+        <div class="logo-icon">◆</div>
+        Blue<span>Vault</span>
+      </div>
+
+      <!-- Después podemos convertirlo en un login real -->
+      <a href="#" class="admin-button">
+        ⚙ Admin
+      </a>
+
+    </div>
+  </header>
+
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="status">
+        <span class="status-dot"></span>
+        Online
+      </div>
+
+      <h1>BlueVault</h1>
+
+      <p>
+        Un espacio simple y moderno para almacenar,
+        compartir y organizar tus archivos y enlaces.
+      </p>
+
+    </section>
+
+
+    <!-- SEARCH -->
+    <div class="search-box">
+
+      <span class="search-icon">⌕</span>
+
+      <input
+        type="text"
+        id="search"
+        placeholder="Buscar archivos o páginas..."
+        onkeyup="searchCards()"
+      >
+
+    </div>
+
+
+    <!-- FILES -->
+    <div class="section-title">
+      <h2>📁 Archivos</h2>
+      <span id="fileCount">3 elementos</span>
+    </div>
+
+    <div class="grid" id="cardGrid">
+
+
+      <!-- CARD 1 -->
+      <div class="card">
+
+        <div class="card-icon">
+          📦
+        </div>
+
+        <h3>Mi archivo</h3>
+
+        <p>
+          Descripción del archivo que quieras compartir.
+        </p>
+
+        <a
+          href="https://example.com"
+          target="_blank"
+          class="card-button"
+        >
+          Abrir
+        </a>
+
+      </div>
+
+
+      <!-- CARD 2 -->
+      <div class="card">
+
+        <div class="card-icon">
+          🔗
+        </div>
+
+        <h3>Mi página</h3>
+
+        <p>
+          Un enlace hacia otra página web.
+        </p>
+
+        <a
+          href="https://example.com"
+          target="_blank"
+          class="card-button"
+        >
+          Visitar
+        </a>
+
+      </div>
+
+
+      <!-- CARD 3 -->
+      <div class="card">
+
+        <div class="card-icon">
+          📱
+        </div>
+
+        <h3>Aplicación</h3>
+
+        <p>
+          Aquí puedes colocar información sobre tu APK.
+        </p>
+
+        <a
+          href="https://example.com"
+          target="_blank"
+          class="card-button"
+        >
+          Descargar
+        </a>
+
+      </div>
+
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+    © 2026 BlueVault · All rights reserved
+  </footer>
+
+
+  <!-- SEARCH SCRIPT -->
+  <script>
+
+    function searchCards() {
+
+      const input =
+        document.getElementById("search")
+          .value
+          .toLowerCase();
+
+      const cards =
+        document.querySelectorAll(".card");
+
+      let visible = 0;
+
+      cards.forEach(card => {
+
+        const text =
+          card.innerText.toLowerCase();
+
+        if (text.includes(input)) {
+
+          card.style.display = "";
+          visible++;
+
+        } else {
+
+          card.style.display = "none";
+
+        }
+
+      });
+
+      document.getElementById("fileCount").textContent =
+        visible + (visible === 1 ? " elemento" : " elementos");
+
+    }
+
+  </script>
+
+</body>
+</html>
